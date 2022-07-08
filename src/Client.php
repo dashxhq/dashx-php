@@ -100,7 +100,8 @@ class Client extends ApiClient {
 
     /**
      * @param string|int $uid
-     * @param null $options
+     * @param array $options
+     * @param array $selectors
      * 
      * @return
      */

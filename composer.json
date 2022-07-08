@@ -1,0 +1,23 @@
+{
+    "name": "dashx/php",
+    "description": "DashX SDK for PHP",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0.2",
+        "guzzlehttp/guzzle": "^7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dashx\\Php\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dashx\\Php\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev"
+}

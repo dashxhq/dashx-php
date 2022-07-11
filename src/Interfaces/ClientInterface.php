@@ -6,11 +6,12 @@ interface ClientInterface {
     // TODO: Fix options with Record
     /**
      * @param string $urn
-     * @param null $options
+     * @param array $options
+     * @param array $selectors
      * 
      * @return
      */
-    public function deliver(string $urn, $options = null);
+    public function deliver(string $urn, array $options = [], array $selectors = []);
 
     /**
      * @param string|int $uid
@@ -19,7 +20,7 @@ interface ClientInterface {
      * 
      * @return
      */
-    public function identify(string|int $uid, array $options, array $selectors);
+    public function identify(string|int|array $uid, array $options, array $selectors);
 
     // TODO: Fix options with GenerateIdentityTokenOptions
     /**
@@ -35,10 +36,11 @@ interface ClientInterface {
      * @param string $event
      * @param string|null $accountUid
      * @param $data
+     * @param array $selectors
      * 
      * @return
      */
-    public function track(string $event, string|int $accountUid, $data);
+    public function track(string $event, string|int $accountUid, $data, array $selector);
 
     // TODO: Fix data with Record
     /**

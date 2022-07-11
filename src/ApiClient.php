@@ -7,6 +7,15 @@ use GuzzleHttp\Client;
 
 abstract class ApiClient implements ClientInterface {
     /**
+     * Format api response.
+     *
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * 
+     * @return array
+     */
+    abstract protected function formatResponse($response): array;
+
+    /**
      * The guzzle client.
      *
      * @var \GuzzleHttp\Client
@@ -58,10 +67,13 @@ abstract class ApiClient implements ClientInterface {
      * @param  string  $method
      * @param  string  $url
      * @param  array  $options
-     * 
-     * @return
+     *
+     * @return array
      */
     protected function request($options = [], $url = '/graphql', $method = 'POST',) {
-        return $this->client()->request($method, $url, $this->processRequest($options, $url));
+        $response = $this->client()
+            ->request($method, $url, $this->processRequest($options, $url));
+
+        return $this->formatResponse($response);
     }
 }

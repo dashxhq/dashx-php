@@ -59,14 +59,41 @@ trait Graphql {
      * @return string
      */
     private function generateArgsString(array $args) {
-        $str = '{';
+        if(count(array_filter(array_keys($args), 'is_string')) > 0) {
 
-        foreach ($args as $key => $value) {
-            $str .= $key . ': "' . $value . '"';
+            $str = '{ ';
+
+            foreach ($args as $key => $value) {
+                if(is_array($value)) {
+                    $value = $this->generateArgsString($value);
+                    $str .= $key . ': ' . $value . ' ';
+    
+                    continue;
+                }
+    
+                $str .= $key . ': "' . $value . '" ';
+            }
+    
+            $str .= ' }';
+    
+            return $str;
+        }else {
+            $str = '[ ';
+
+            foreach ($args as $key => $value) {
+                if(is_array($value)) {
+                    $value = $this->generateArgsString($value);
+                    $str .= $value . ', ';
+    
+                    continue;
+                }
+    
+                $str .= '"' . $value . '", ';
+            }
+    
+            $str .= ' ]';
+    
+            return $str;
         }
-
-        $str .= '}';
-
-        return $str;
     }
 }

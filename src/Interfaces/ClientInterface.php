@@ -63,11 +63,11 @@ interface ClientInterface {
     // TODO: Fix options with ContentOptions
     /**
      * @param string $contentType
-     * @param $options
+     * @param array $options
      * 
      * @return
      */
-    public function searchContent(string $contentType, $options = null);
+    public function searchContent(string $contentType, $options = []);
 
     // TODO: Fix option with FetchContentOptions
     /**

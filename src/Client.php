@@ -4,7 +4,9 @@ namespace Dashx\Php;
 
 use Ramsey\Uuid\Uuid;
 
-class Client extends ApiClient {
+use Dashx\Php\Interfaces\ClientInterface;
+
+class Client extends ApiClient implements ClientInterface {
     use Graphql;
 
     /**
@@ -29,13 +31,6 @@ class Client extends ApiClient {
     private $private_key;
 
     /**
-     * Target installation
-     * 
-     * @var
-     */
-    private $target_installation;
-
-    /**
      * Target environment
      * 
      * @var
@@ -47,11 +42,10 @@ class Client extends ApiClient {
      *
      * @return void
      */
-    public function __construct($public_key, $private_key, $target_environment, $base_uri = 'https://api.dashx-staging.com', $target_installation = null) {
+    public function __construct($public_key, $private_key, $target_environment, $base_uri = 'https://api.dashx-staging.com') {
         $this->base_uri = $base_uri;
         $this->public_key = $public_key;
         $this->private_key = $private_key;
-        $this->target_installation = $target_installation;
         $this->target_environment = $target_environment;
     }
 
@@ -302,12 +296,25 @@ class Client extends ApiClient {
 
     /**
      * @param string $contentType
-     * @param $options
+     * @param array $options
      * 
      * @return
      */
-    public function searchContent(string $contentType, $options = null) {
+    public function searchContent(string $contentType, $options = []) {
+        $options = array_merge($options, [
+            'contentType' => $contentType
+        ]);
 
+        $body = json_encode([
+            'query' => $this->query('searchContent', $options, []),
+            'variables' => [
+                'input' => $options
+            ]
+        ]);
+
+        return $this->request([
+            'body' => $body
+        ]);
     }
 
     /**

@@ -13,14 +13,13 @@ trait Graphql {
      * @return string
      */
     private function query(string $name, array $args, array $selectors) {
-        $selectors = implode(' ', $selectors);          
+        $selectors = $this->generateSelectorsString($selectors);
+
         $args = $this->generateArgsString($args);
 
         $query = <<<GQL
             {
-                $name(input: $args) {
-                    $selectors
-                }
+                $name(input: $args) $selectors
             }
         GQL;
 
@@ -37,14 +36,13 @@ trait Graphql {
      * @return string
      */
     private function mutation(string $name, array $args, array $selectors) {
-        $selectors = implode(' ', $selectors);          
+        $selectors = $this->generateSelectorsString($selectors);
+
         $args = $this->generateArgsString($args);
 
         $mutation = <<<GQL
             mutation {
-                $name(input: $args) {
-                    $selectors
-                }
+                $name(input: $args) $selectors
             }
         GQL;
 
@@ -95,5 +93,28 @@ trait Graphql {
     
             return $str;
         }
+    }
+
+    /**
+     * Generate the selectors string.
+     *
+     * @param array $selectors
+     *
+     * @return string
+     */
+    private function generateSelectorsString(array $selectors) {
+        if(!count($selectors)) {
+            return '';
+        }
+
+        $selectors = implode(' ', $selectors);
+
+        $string = <<<GQL
+        {
+            $selectors
+        }
+        GQL;
+
+        return $string;
     }
 }

@@ -2,10 +2,9 @@
 
 namespace Dashx\Php;
 
-use Dashx\Php\Interfaces\ClientInterface;
 use GuzzleHttp\Client;
 
-abstract class ApiClient implements ClientInterface {
+abstract class ApiClient {
     /**
      * Format api response.
      *

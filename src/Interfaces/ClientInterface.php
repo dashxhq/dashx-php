@@ -25,11 +25,11 @@ interface ClientInterface {
     // TODO: Fix options with GenerateIdentityTokenOptions
     /**
      * @param string|int $uid
-     * @param null $options
+     * @param array $options
      * 
      * @return
      */
-    public function generateIdentityToken(string|int $uid, $options);
+    public function generateIdentityToken(string|int $uid, $options = []);
 
     // TODO: Fix data with Record
     /**

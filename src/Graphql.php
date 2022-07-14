@@ -107,6 +107,12 @@ trait Graphql {
             return '';
         }
 
+        foreach($selectors as $index => $value) {
+            if(is_array($value)) {
+                $selectors[$index] = $index  . $this->generateSelectorsString($value);
+            }
+        }
+
         $selectors = implode(' ', $selectors);
 
         $string = <<<GQL

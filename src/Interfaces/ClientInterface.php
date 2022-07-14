@@ -40,25 +40,26 @@ interface ClientInterface {
      * 
      * @return
      */
-    public function track(string $event, string|int $accountUid, $data, array $selector);
+    public function track(string $event, string|int $accountUid, $data, array $selectors);
+
+    /**
+     * @param string $urn
+     * @param $data
+     * @param array $selectors
+     * 
+     * @return
+     */
+    public function addContent(string $urn, $data, array $selectors);
 
     // TODO: Fix data with Record
     /**
      * @param string $urn
      * @param $data
+     * @param array $selectors
      * 
      * @return
      */
-    public function addContent(string $urn, $data);
-
-    // TODO: Fix data with Record
-    /**
-     * @param string $urn
-     * @param $data
-     * 
-     * @return
-     */
-    public function editContent(string $urn, $data);
+    public function editContent(string $urn, $data, $selectors);
 
     // TODO: Fix options with ContentOptions
     /**

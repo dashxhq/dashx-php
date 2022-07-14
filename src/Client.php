@@ -293,21 +293,71 @@ class Client extends ApiClient implements ClientInterface {
     /**
      * @param string $urn
      * @param $data
+     * @param array $selectors
      * 
      * @return array
      */
-    public function addContent(string $urn, $data) {
+    public function addContent(string $urn, $data, $selectors = ['id', 'identifier', 'position', 'data']) {
+        $options = [
+            'content' => null,
+            'contentType' => null,
+            'data' => is_array($data) ? str_replace('"', '\"', json_encode($data)) : $data
+        ];
 
+        if(str_contains($urn, '/')) {
+            $urns = explode('/', $urn);
+
+            $options['contentType'] = $urns[0];
+            $options['content'] = $urns[1];
+        }else {
+            $options['contentType'] = $urn;
+        }
+
+        $body = json_encode([
+            'query' => $this->mutation('addContent', $options, $selectors),
+            'variables' => [
+                'input' => $options
+            ]
+        ]);
+
+        return $this->request([
+            'body' => $body
+        ]);
     }
 
     /**
      * @param string $urn
      * @param $data
+     * @param array $selectors
      * 
      * @return array
      */
-    public function editContent(string $urn, $data) {
+    public function editContent(string $urn, $data, $selectors = ['id', 'identifier', 'position', 'data']) {
+        $options = [
+            'content' => null,
+            'contentType' => null,
+            'data' => is_array($data) ? str_replace('"', '\"', json_encode($data)) : $data
+        ];
 
+        if(str_contains($urn, '/')) {
+            $urns = explode('/', $urn);
+
+            $options['contentType'] = $urns[0];
+            $options['content'] = $urns[1];
+        }else {
+            $options['contentType'] = $urn;
+        }
+
+        $body = json_encode([
+            'query' => $this->mutation('editContent', $options, $selectors),
+            'variables' => [
+                'input' => $options
+            ]
+        ]);
+
+        return $this->request([
+            'body' => $body
+        ]);
     }
 
     /**
@@ -340,17 +390,63 @@ class Client extends ApiClient implements ClientInterface {
      * 
      * @return array
      */
-    public function fetchContent(string $urn, array $options) {
+    public function fetchContent(string $urn, array $options = []) {
+        if(!str_contains($urn, '/')) {
+            throw new Error(`URN must be of form: {contentType}/{content}`);
+        }
 
+        $urns = explode('/', $urn);
+
+        $options = array_merge($options, [
+            'contentType' => $urns[0],
+            'content' => $urns[1]
+        ]);
+
+        $body = json_encode([
+            'query' => $this->query('fetchContent', $options, []),
+            'variables' => [
+                'input' => $options
+            ]
+        ]);
+
+        return $this->request([
+            'body' => $body
+        ]);
     }
 
     /**
      * @param string $identifier
+     * @param array $selectors
      * 
      * @return array
      */
-    public function fetchItem(string $identifier) {
+    public function fetchItem(string $identifier, array $selectors = [
+        'id',
+        'installationId',
+        'kind',
+        'name',
+        'identifier',
+        'description',
+        'createdAt',
+        'itemCategoryMemberships' => [
+            'id'
+        ],
+        'updatedAt',
+    ]) {
+        $options = [
+            'identifier' => $identifier
+        ];
 
+        $body = json_encode([
+            'query' => $this->query('fetchItem', $options, $selectors),
+            'variables' => [
+                'input' => $options
+            ]
+        ]);
+
+        return $this->request([
+            'body' => $body
+        ]);
     }
 
     /**

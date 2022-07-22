@@ -39,11 +39,71 @@ class Client extends ApiClient implements ClientInterface {
     private $target_environment;
 
     /**
+     * Cart query
+     * 
+     * @var
+     */
+    public static $cart = [
+        'id',
+        'status',
+        'subtotal',
+        'discount',
+        'tax',
+        'total',
+        'gatewayMeta',
+        'currencyCode',
+        'orderItems' => [
+            'id',
+            'quantity',
+            'unitPrice',
+            'subtotal',
+            'discount',
+            'tax',
+            'total',
+            'custom',
+            'currencyCode',
+            'item' => [
+                'id',
+                'installationId',
+                'name',
+                'identifier',
+                'description',
+                'createdAt',
+                'updatedAt',
+                'pricings' => [
+                    'id',
+                    'kind',
+                    'amount',
+                    'originalAmount',
+                    'isRecurring',
+                    'recurringInterval',
+                    'recurringIntervalUnit',
+                    'appleProductIdentifier',
+                    'googleProductIdentifier',
+                    'currencyCode',
+                    'createdAt',
+                    'updatedAt',
+                ]
+            ]
+        ],
+        'couponRedemptions' => [
+            'coupon' => [
+                'name',
+                'identifier',
+                'discountType',
+                'discountAmount',
+                'currencyCode',
+                'expiresAt',
+            ]
+        ]
+    ];
+
+    /**
      * Create a new client instance.
      *
      * @return void
      */
-    public function __construct($public_key, $private_key, $target_environment = 'workspace', $base_uri = 'https://api.dashx-staging.com') {
+    public function __construct($public_key, $private_key, $target_environment = 'staging', $base_uri = 'https://api.dashx-staging.com') {
         $this->base_uri = $base_uri;
         $this->public_key = $public_key;
         $this->private_key = $private_key;
@@ -453,35 +513,125 @@ class Client extends ApiClient implements ClientInterface {
      * @param string|int|null $uid
      * @param string|null $anonymousUid
      * @param string|null $orderId
+     * @param array $selectors
      * 
      * @return array
      */
-    public function fetchCart(string|int|null $uid, ?string $anonymousUid, ?string $orderId) {
+    public function fetchCart(string|int|null $uid, ?string $anonymousUid, ?string $orderId, array $selectors = []) {
+        if(empty($selectors)) {
+            $selectors = self::$cart;
+        }
 
+        $options = [
+            'accountUid' => strval($uid)
+        ];
+
+        if($anonymousUid) {
+            $options['accountAnonymousUid'] = $anonymousUid;
+        }
+
+        if($orderId) {
+            $options['orderId'] = $orderId;
+        }
+
+        $body = json_encode([
+            'query' => $this->query('fetchCart', $options, $selectors),
+            'variables' => [
+                'input' => $options
+            ]
+        ]);
+        
+        return $this->request([
+            'body' => $body
+        ]);
     }
 
     /**
      * @param string|int|null $uid
      * @param string|null $anonymousUid
      * @param string|null $gateway
-     * @param $gatewayOptions
      * @param string|null $orderId
+     * @param array $gatewayOptions
+     * @param array $selectors
      * 
      * @return array
      */
-    public function checkoutCart(string|int|null $uid, ?string $anonymousUid, ?string $gateway, $gatewayOptions, ?string $orderId) {
+    public function checkoutCart(string|int|null $uid, ?string $anonymousUid, ?string $gateway, ?string $orderId, array $gatewayOptions = [], array $selectors = []) {
+        if(empty($selectors)) {
+            $selectors = self::$cart;
+        }
 
+        $options = [
+            'accountUid' => strval($uid)
+        ];
+
+        if($anonymousUid) {
+            $options['accountAnonymousUid'] = $anonymousUid;
+        }
+
+        if($orderId) {
+            $options['orderId'] = $orderId;
+        }
+
+        if($gateway) {
+            $options['gatewayIdentifier'] = $gateway;
+        }
+
+        if(!empty($gatewayOptions)) {
+            $options['gatewayOptions'] = $gatewayOptions;
+        }
+
+        $body = json_encode([
+            'query' => $this->mutation('checkoutCart', $options, $selectors),
+            'variables' => [
+                'input' => $options
+            ]
+        ]);
+        
+        return $this->request([
+            'body' => $body
+        ]);
     }
 
     /**
      * @param string|int|null $uid
      * @param string|null $anonymousUid
-     * @param $gatewayResponse
      * @param string|null $orderId
+     * @param array $gatewayResponse
+     * @param array $selectors
      * 
      * @return array
      */
-    public function capturePayment(string|int|null $uid, ?string $anonymousUid, $gatewayResponse, ?string $orderId) {
+    public function capturePayment(string|int|null $uid, ?string $anonymousUid, ?string $orderId, array $gatewayResponse = [], array $selectors = []) {
+        if(empty($selectors)) {
+            $selectors = self::$cart;
+        }
 
+        $options = [
+            'accountUid' => strval($uid)
+        ];
+
+        if($anonymousUid) {
+            $options['accountAnonymousUid'] = $anonymousUid;
+        }
+
+        if($orderId) {
+            $options['orderId'] = $orderId;
+        }
+
+        if(!empty($gatewayResponse)) {
+            $options['gatewayResponse'] = $gatewayResponse;
+        }
+
+        $body = json_encode([
+            'query' => $this->mutation('capturePayment', $options, $selectors),
+            'variables' => [
+                'input' => $options
+            ]
+        ]);
+        
+        return $this->request([
+            'body' => $body
+        ]);
     }
 }

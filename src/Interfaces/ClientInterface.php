@@ -3,7 +3,6 @@
 namespace Dashx\Php\Interfaces;
 
 interface ClientInterface {
-    // TODO: Fix options with Record
     /**
      * @param string $urn
      * @param array $options
@@ -11,7 +10,7 @@ interface ClientInterface {
      * 
      * @return
      */
-    public function deliver(string $urn, array $options = [], array $selectors = []);
+    public function deliver(string $urn, array $options, array $selectors);
 
     /**
      * @param string|int $uid
@@ -22,16 +21,14 @@ interface ClientInterface {
      */
     public function identify(string|int|array $uid, array $options, array $selectors);
 
-    // TODO: Fix options with GenerateIdentityTokenOptions
     /**
      * @param string|int $uid
      * @param array $options
      * 
      * @return
      */
-    public function generateIdentityToken(string|int $uid, $options = []);
+    public function generateIdentityToken(string|int $uid, array $options);
 
-    // TODO: Fix data with Record
     /**
      * @param string $event
      * @param string|null $accountUid
@@ -51,7 +48,6 @@ interface ClientInterface {
      */
     public function addContent(string $urn, $data, array $selectors);
 
-    // TODO: Fix data with Record
     /**
      * @param string $urn
      * @param $data
@@ -59,18 +55,16 @@ interface ClientInterface {
      * 
      * @return
      */
-    public function editContent(string $urn, $data, $selectors);
+    public function editContent(string $urn, $data, array $selectors);
 
-    // TODO: Fix options with ContentOptions
     /**
      * @param string $contentType
      * @param array $options
      * 
      * @return
      */
-    public function searchContent(string $contentType, $options = []);
+    public function searchContent(string $contentType, array $options);
 
-    // TODO: Fix option with FetchContentOptions
     /**
      * @param string $urn
      * @param array $options
@@ -90,29 +84,33 @@ interface ClientInterface {
      * @param string|int|null $uid
      * @param string|null $anonymousUid
      * @param string|null $orderId
+     * @param array $selectors
      * 
      * @return
      */
-    public function fetchCart(string|int|null $uid, ?string $anonymousUid, ?string $orderId);
+    public function fetchCart(string|int|null $uid, ?string $anonymousUid, ?string $orderId, array $selectors);
 
     /**
      * @param string|int|null $uid
      * @param string|null $anonymousUid
      * @param string|null $gateway
-     * @param $gatewayOptions
      * @param string|null $orderId
+     * @param array $gatewayOptions
+     * @param array $selectors
+     * 
      * 
      * @return
      */
-    public function checkoutCart(string|int|null $uid, ?string $anonymousUid, ?string $gateway, $gatewayOptions, ?string $orderId);
+    public function checkoutCart(string|int|null $uid, ?string $anonymousUid, ?string $gateway, ?string $orderId, array $gatewayOptions, array $selectors);
 
      /**
      * @param string|int|null $uid
      * @param string|null $anonymousUid
-     * @param $gatewayResponse
      * @param string|null $orderId
+     * @param array $gatewayResponse
+     * @param array $selectors
      * 
      * @return
      */
-    public function capturePayment(string|int|null $uid, ?string $anonymousUid, $gatewayResponse, ?string $orderId);
+    public function capturePayment(string|int|null $uid, ?string $anonymousUid, ?string $orderId, array $gatewayResponse, array $selectors);
 }

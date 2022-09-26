@@ -331,7 +331,7 @@ class Client extends ApiClient implements ClientInterface {
      * 
      * @return array
      */
-    public function track(string $event, string|int $accountUid, $data, $selectors = ['id', 'success']) {
+    public function track(string $event, string|int $accountUid, $data, $selectors = ['success']) {
         $options = [
             'event' => $event,
             'accountUid' => strval($accountUid),

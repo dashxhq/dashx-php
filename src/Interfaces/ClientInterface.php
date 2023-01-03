@@ -7,7 +7,7 @@ interface ClientInterface {
      * @param string $urn
      * @param array $options
      * @param array $selectors
-     * 
+     *
      * @return
      */
     public function deliver(string $urn, array $options, array $selectors);
@@ -16,25 +16,17 @@ interface ClientInterface {
      * @param string|int $uid
      * @param array $options
      * @param array $selectors
-     * 
+     *
      * @return
      */
     public function identify(string|int|array $uid, array $options, array $selectors);
-
-    /**
-     * @param string|int $uid
-     * @param array $options
-     * 
-     * @return
-     */
-    public function generateIdentityToken(string|int $uid, array $options);
 
     /**
      * @param string $event
      * @param string|null $accountUid
      * @param $data
      * @param array $selectors
-     * 
+     *
      * @return
      */
     public function track(string $event, string|int $accountUid, $data, array $selectors);
@@ -43,7 +35,7 @@ interface ClientInterface {
      * @param string $urn
      * @param $data
      * @param array $selectors
-     * 
+     *
      * @return
      */
     public function addContent(string $urn, $data, array $selectors);
@@ -52,7 +44,7 @@ interface ClientInterface {
      * @param string $urn
      * @param $data
      * @param array $selectors
-     * 
+     *
      * @return
      */
     public function editContent(string $urn, $data, array $selectors);
@@ -60,7 +52,7 @@ interface ClientInterface {
     /**
      * @param string $contentType
      * @param array $options
-     * 
+     *
      * @return
      */
     public function searchContent(string $contentType, array $options);
@@ -68,14 +60,14 @@ interface ClientInterface {
     /**
      * @param string $urn
      * @param array $options
-     * 
+     *
      * @return
      */
     public function fetchContent(string $urn, array $options);
 
     /**
      * @param string $identifier
-     * 
+     *
      * @return
      */
     public function fetchItem(string $identifier);
@@ -85,7 +77,7 @@ interface ClientInterface {
      * @param string|null $anonymousUid
      * @param string|null $orderId
      * @param array $selectors
-     * 
+     *
      * @return
      */
     public function fetchCart(string|int|null $uid, ?string $anonymousUid, ?string $orderId, array $selectors);
@@ -97,8 +89,8 @@ interface ClientInterface {
      * @param string|null $orderId
      * @param array $gatewayOptions
      * @param array $selectors
-     * 
-     * 
+     *
+     *
      * @return
      */
     public function checkoutCart(string|int|null $uid, ?string $anonymousUid, ?string $gateway, ?string $orderId, array $gatewayOptions, array $selectors);
@@ -109,7 +101,7 @@ interface ClientInterface {
      * @param string|null $orderId
      * @param array $gatewayResponse
      * @param array $selectors
-     * 
+     *
      * @return
      */
     public function capturePayment(string|int|null $uid, ?string $anonymousUid, ?string $orderId, array $gatewayResponse, array $selectors);

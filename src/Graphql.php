@@ -5,11 +5,11 @@ namespace Dashx\Php;
 trait Graphql {
     /**
      * Generate the graphql query.
-     * 
+     *
      * @param string $name
      * @param array $args
      * @param array $selectors
-     * 
+     *
      * @return string
      */
     private function query(string $name, array $args, array $selectors) {
@@ -28,11 +28,11 @@ trait Graphql {
 
     /**
      * Generate the graphql mutation.
-     * 
+     *
      * @param string $name
      * @param array $args
      * @param array $selectors
-     * 
+     *
      * @return string
      */
     private function mutation(string $name, array $args, array $selectors) {
@@ -53,7 +53,7 @@ trait Graphql {
      * Generate the arguments string.
      *
      * @param array $args
-     * 
+     *
      * @return string
      */
     private function generateArgsString(array $args) {
@@ -65,15 +65,15 @@ trait Graphql {
                 if(is_array($value)) {
                     $value = $this->generateArgsString($value);
                     $str .= $key . ': ' . $value . ' ';
-    
+
                     continue;
                 }
-    
+
                 $str .= $key . ': "' . $value . '" ';
             }
-    
+
             $str .= ' }';
-    
+
             return $str;
         }else {
             $str = '[ ';
@@ -82,15 +82,15 @@ trait Graphql {
                 if(is_array($value)) {
                     $value = $this->generateArgsString($value);
                     $str .= $value . ', ';
-    
+
                     continue;
                 }
-    
+
                 $str .= '"' . $value . '", ';
             }
-    
+
             $str .= ' ]';
-    
+
             return $str;
         }
     }

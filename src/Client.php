@@ -12,35 +12,35 @@ class Client extends ApiClient implements ClientInterface {
 
     /**
      * Base uri
-     * 
+     *
      * @var
      */
     private $base_uri;
 
     /**
      * Public key
-     * 
+     *
      * @var
      */
     private $public_key;
 
     /**
      * Private key
-     * 
+     *
      * @var
      */
     private $private_key;
 
     /**
      * Target environment
-     * 
+     *
      * @var
      */
     private $target_environment;
 
     /**
      * Cart query
-     * 
+     *
      * @var
      */
     public static $cart = [
@@ -149,7 +149,7 @@ class Client extends ApiClient implements ClientInterface {
      * Format api response.
      *
      * @param \Psr\Http\Message\ResponseInterface $response
-     * 
+     *
      * @return array
      */
     protected function formatResponse($response): array {
@@ -174,7 +174,7 @@ class Client extends ApiClient implements ClientInterface {
      * @param string $urn
      * @param null $options
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function deliver($urn, $options = [], $selectors = [
@@ -244,7 +244,7 @@ class Client extends ApiClient implements ClientInterface {
      * @param string|int $uid
      * @param array $options
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function identify(string|int|array $uid, array $options = [], array $selectors = [
@@ -299,36 +299,11 @@ class Client extends ApiClient implements ClientInterface {
     }
 
     /**
-     * @param string|int $uid
-     * @param array $options
-     *
-     * @return string
-     */
-    public function generateIdentityToken(string|int $uid, $options = []) {
-        if(!$this->private_key) {
-            throw new Error('Private key is not set!');
-        }
-
-        $kind = $options['kind'] ?? 'regular';
-        $plain_text = `v1;${kind};${uid}`;
-        $key = $this->private_key;
-
-        $cipher = 'aes-256-gcm';
-        $iv_len = openssl_cipher_iv_length($cipher);
-        $iv = openssl_random_pseudo_bytes($iv_len);
-        $tag = '';
-
-        $ciphertext = openssl_encrypt($plain_text, $cipher, $key, OPENSSL_RAW_DATA, $iv, $tag);
-
-        return strtr(base64_encode($iv.$ciphertext.$tag), '+/=', '._-');
-    }
-
-    /**
      * @param string $event
      * @param string|null $accountUid
      * @param $data
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function track(string $event, string|int $accountUid, $data, $selectors = ['success']) {
@@ -354,7 +329,7 @@ class Client extends ApiClient implements ClientInterface {
      * @param string $urn
      * @param $data
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function addContent(string $urn, $data, $selectors = ['id', 'identifier', 'position', 'data']) {
@@ -389,7 +364,7 @@ class Client extends ApiClient implements ClientInterface {
      * @param string $urn
      * @param $data
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function editContent(string $urn, $data, $selectors = ['id', 'identifier', 'position', 'data']) {
@@ -423,7 +398,7 @@ class Client extends ApiClient implements ClientInterface {
     /**
      * @param string $contentType
      * @param array $options
-     * 
+     *
      * @return array
      */
     public function searchContent(string $contentType, $options = []) {
@@ -447,7 +422,7 @@ class Client extends ApiClient implements ClientInterface {
     /**
      * @param string $urn
      * @param array $options
-     * 
+     *
      * @return array
      */
     public function fetchContent(string $urn, array $options = []) {
@@ -477,7 +452,7 @@ class Client extends ApiClient implements ClientInterface {
     /**
      * @param string $identifier
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function fetchItem(string $identifier, array $selectors = [
@@ -514,7 +489,7 @@ class Client extends ApiClient implements ClientInterface {
      * @param string|null $anonymousUid
      * @param string|null $orderId
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function fetchCart(string|int|null $uid, ?string $anonymousUid, ?string $orderId, array $selectors = []) {
@@ -540,7 +515,7 @@ class Client extends ApiClient implements ClientInterface {
                 'input' => $options
             ]
         ]);
-        
+
         return $this->request([
             'body' => $body
         ]);
@@ -553,7 +528,7 @@ class Client extends ApiClient implements ClientInterface {
      * @param string|null $orderId
      * @param array $gatewayOptions
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function checkoutCart(string|int|null $uid, ?string $anonymousUid, ?string $gateway, ?string $orderId, array $gatewayOptions = [], array $selectors = []) {
@@ -587,7 +562,7 @@ class Client extends ApiClient implements ClientInterface {
                 'input' => $options
             ]
         ]);
-        
+
         return $this->request([
             'body' => $body
         ]);
@@ -599,7 +574,7 @@ class Client extends ApiClient implements ClientInterface {
      * @param string|null $orderId
      * @param array $gatewayResponse
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function capturePayment(string|int|null $uid, ?string $anonymousUid, ?string $orderId, array $gatewayResponse = [], array $selectors = []) {
@@ -629,7 +604,7 @@ class Client extends ApiClient implements ClientInterface {
                 'input' => $options
             ]
         ]);
-        
+
         return $this->request([
             'body' => $body
         ]);

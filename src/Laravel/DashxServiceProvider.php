@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 use Dashx\Php\Client;
 
-use Exception;
+use Error;
 
 class DashxServiceProvider extends ServiceProvider
 {
@@ -27,7 +27,7 @@ class DashxServiceProvider extends ServiceProvider
             $config = $this->getDashxConfig($app);
 
             if (empty($config)) {
-                throw new Exception('DashX configuration not exists.');
+                throw new Error('DashX configuration not exists.');
             }
 
             return new Client(

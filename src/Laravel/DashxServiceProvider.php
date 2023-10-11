@@ -38,7 +38,7 @@ class DashxServiceProvider extends ServiceProvider
             );
         });
 
-        $app->alias('DashX', 'Dashx\Php\Client');
+        $this->app->alias('DashX', 'Dashx\Php\Client');
     }
 
     /**

@@ -15,6 +15,16 @@
             "Dashx\\Php\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dashx\\Php\\Laravel\\DashxServiceProvider"
+            ],
+            "aliases": {
+                "DashX": "Dashx\\Php\\Laravel\\DashxFacade"
+            }
+        }
+    },
     "autoload-dev": {
         "psr-4": {
             "Dashx\\Php\\Tests\\": "tests/"

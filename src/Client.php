@@ -310,7 +310,7 @@ class Client extends ApiClient implements ClientInterface {
         }
 
         $kind = $options['kind'] ?? 'regular';
-        $plain_text = `v1;${kind};${uid}`;
+        $plain_text = 'v1;' . $kind . ';' . $uid;
         $key = $this->private_key;
 
         $cipher = 'aes-256-gcm';

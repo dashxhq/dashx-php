@@ -206,14 +206,26 @@ class Client extends ApiClient implements ClientInterface {
         $rest = array_diff_key($options, array_flip(['content', 'to', 'cc', 'bcc']));
 
         if(isset($content['to']) || $to) {
+            if (!is_array($to) && is_string($to)) {
+                $to = [$to];
+            }
+
             $content['to'] = isset($content['to']) ? array_merge(...[$content['to']]) : array_merge(...[$to]);
         }
 
         if(isset($content['cc']) || $cc) {
+            if (!is_array($cc) && is_string($cc)) {
+                $to = [$cc];
+            }
+
             $content['cc'] = isset($content['cc']) ? array_merge(...[$content['cc']]) : array_merge(...[$cc]);
         }
 
         if(isset($content['bcc']) || $bcc) {
+            if (!is_array($bcc) && is_string($bcc)) {
+                $to = [$bcc];
+            }
+
             $content['bcc'] = isset($content['bcc']) ? array_merge(...[$content['bcc']]) : array_merge(...[$bcc]);
         }
 
@@ -276,8 +288,7 @@ class Client extends ApiClient implements ClientInterface {
         'unconfirmedEmail',
         'confirmationDigest',
         'confirmationExpiresAt',
-        'regularAccountId',
-        'scope'
+        'regularAccountId'
     ]) {
         if(is_string($uid) || is_numeric($uid)) {
             $options = array_merge($options, [

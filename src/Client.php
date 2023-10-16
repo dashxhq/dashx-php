@@ -179,7 +179,6 @@ class Client extends ApiClient implements ClientInterface {
      */
     public function deliver($urn, $options = [], $selectors = [
         'id',
-        'installationId',
         'contentId',
         'content',
         'data',
@@ -196,12 +195,8 @@ class Client extends ApiClient implements ClientInterface {
     ) {
         $urns = explode('/', $urn);
 
-        if(count($urns) !== 2) {
-            return;
-        }
-
         $contentTypeIdentifier = $urns[0];
-        $contentIdentifier = $urns[1];
+        $contentIdentifier = !empty($urns[1]) ? $urns[1] : null;
 
         $content = (isset($options['content'])) ? $options['content'] : [];
         $to = (isset($options['to'])) ? $options['to'] : null;
@@ -211,22 +206,31 @@ class Client extends ApiClient implements ClientInterface {
         $rest = array_diff_key($options, array_flip(['content', 'to', 'cc', 'bcc']));
 
         if(isset($content['to']) || $to) {
-            $content['to'] = isset($content['to']) ? [$content['to']] : [$to];
+            $content['to'] = isset($content['to']) ? array_merge(...[$content['to']]) : array_merge(...[$to]);
         }
 
         if(isset($content['cc']) || $cc) {
-            $content['cc'] = isset($content['cc']) ? [$content['cc']] : [$cc];
+            $content['cc'] = isset($content['cc']) ? array_merge(...[$content['cc']]) : array_merge(...[$cc]);
         }
 
         if(isset($content['bcc']) || $bcc) {
-            $content['bcc'] = isset($content['bcc']) ? [$content['bcc']] : [$bcc];
+            $content['bcc'] = isset($content['bcc']) ? array_merge(...[$content['bcc']]) : array_merge(...[$bcc]);
         }
 
-        $options = array_merge($rest, [
-            'contentTypeIdentifier' => $contentTypeIdentifier,
-            'contentIdentifier' => $contentIdentifier,
-            'content' => $content
-        ]);
+        if(isset($content['html_body'])) {
+            $content['html_body'] = str_replace(["\n", "\r"], '', $content['html_body']);
+        }
+
+        $options = array_merge(
+            $rest,
+            array_merge(
+                [
+                    'contentTypeIdentifier' => $contentTypeIdentifier,
+                    'content' => $content
+                ],
+                ($contentIdentifier) ? [ 'contentIdentifier' => $contentIdentifier ] : []
+            )
+        );
 
         $body = json_encode([
             'query' => $this->mutation('createDelivery', $options, $selectors),

@@ -9,7 +9,7 @@ abstract class ApiClient {
      * Format api response.
      *
      * @param \Psr\Http\Message\ResponseInterface $response
-     * 
+     *
      * @return array
      */
     abstract protected function formatResponse($response): array;

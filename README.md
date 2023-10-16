@@ -32,7 +32,7 @@ require 'vendor/autoload.php';
 # import the DashX Client Class
 use Dashx\Php\Client;
 
-# create dashx instance
+# create DashX instance
 $dashx = new Client(
     'DASHX_PUBLIC_KEY',
     'DASHX_PRIVATE_KEY',
@@ -54,7 +54,8 @@ To integrate DashX with Laravel, run the following artisan command to publish th
 ```bash
 php artisan vendor:publish --provider="Dashx\Php\Laravel\DashxServiceProvider"
 ```
-Add DashX below env variables with values:
+
+Add DashX environment variables with values:
 
 ```bash
 DASHX_URI=

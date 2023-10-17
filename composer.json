@@ -5,7 +5,7 @@
     "require": {
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.4",
-        "ramsey/uuid": "5.x-dev"
+        "ramsey/uuid": "^4.7.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
@@ -13,6 +13,16 @@
     "autoload": {
         "psr-4": {
             "Dashx\\Php\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dashx\\Php\\Laravel\\DashxServiceProvider"
+            ],
+            "aliases": {
+                "DashX": "Dashx\\Php\\Laravel\\DashxFacade"
+            }
         }
     },
     "autoload-dev": {

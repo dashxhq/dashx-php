@@ -41,8 +41,10 @@ $dashx = new Client(
 );
 
 $dashx->deliver('email/forgot-password', [
+    'to' => 'youremail@example.com',
     'data' => [
-        'email' => 'dashx@example.com'
+        'token' => 'tokenvalue'
+        # ... rest of data payload
     ]
 ]);
 ```
@@ -70,8 +72,10 @@ DASHX_TARGET_ENVIROMENT=
 use DashX;
 
 DashX::deliver('email/forgot-password', [
+    'to' => 'youremail@example.com',
     'data' => [
-      'email' => 'dashx@example.com'
+        'token' => 'tokenvalue'
+        # ... rest of data payload
     ]
 ]);
 ```

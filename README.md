@@ -44,7 +44,7 @@ $dashx->deliver('email/forgot-password', [
     'to' => 'youremail@example.com',
     'data' => [
         'token' => 'tokenvalue'
-        # ... rest of data payload
+        // ... rest of data payload
     ]
 ]);
 ```
@@ -75,7 +75,7 @@ DashX::deliver('email/forgot-password', [
     'to' => 'youremail@example.com',
     'data' => [
         'token' => 'tokenvalue'
-        # ... rest of data payload
+        // ... rest of data payload
     ]
 ]);
 ```

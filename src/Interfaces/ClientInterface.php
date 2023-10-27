@@ -105,4 +105,21 @@ interface ClientInterface {
      * @return
      */
     public function capturePayment(string|int|null $uid, ?string $anonymousUid, ?string $orderId, array $gatewayResponse, array $selectors);
+
+    /**
+     * @param string|int $uid
+     * @param array $selectors
+     * 
+     * @return
+     */
+    public function fetchStoredPreferences(string|int $uid, array $selectors);
+
+    /**
+     * @param string|int $uid
+     * @param $preferenceData
+     * @param array $selectors
+     * 
+     * @return
+     */
+    public function saveStoredPreferences(string|int $uid, $preferenceData, array $selectors);
 }

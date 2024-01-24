@@ -627,8 +627,30 @@ class Client extends ApiClient implements ClientInterface {
 
     /**
      * @param string|int $uid
+     *
+     * @return array
+     */
+    public function fetchContacts(string|int $uid) {
+        $options = [
+            'uid' => strval($uid)
+        ];
+
+        $body = json_encode([
+            'query' => $this->query('fetchContacts', $options),
+            'variables' => [
+                'input' => $options
+            ]
+        ]);
+
+        return $this->request([
+            'body' => $body
+        ]);
+    }
+
+    /**
+     * @param string|int $uid
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function fetchStoredPreferences(string|int $uid, array $selectors = ['preferenceData']) {
@@ -652,7 +674,7 @@ class Client extends ApiClient implements ClientInterface {
      * @param string|int $uid
      * @param $preferenceData
      * @param array $selectors
-     * 
+     *
      * @return array
      */
     public function saveStoredPreferences(string|int $uid, $preferenceData, array $selectors = ['success']) {

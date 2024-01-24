@@ -108,8 +108,15 @@ interface ClientInterface {
 
     /**
      * @param string|int $uid
+     *
+     * @return
+     */
+    public function fetchContacts(string|int $uid);
+
+    /**
+     * @param string|int $uid
      * @param array $selectors
-     * 
+     *
      * @return
      */
     public function fetchStoredPreferences(string|int $uid, array $selectors);
@@ -118,7 +125,7 @@ interface ClientInterface {
      * @param string|int $uid
      * @param $preferenceData
      * @param array $selectors
-     * 
+     *
      * @return
      */
     public function saveStoredPreferences(string|int $uid, $preferenceData, array $selectors);
